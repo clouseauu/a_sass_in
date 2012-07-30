@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+  set :run, true
+
+  get '/' do
+    a_sass_in = ASassIn::hello
+    return a_sass_in.hello
+  end
