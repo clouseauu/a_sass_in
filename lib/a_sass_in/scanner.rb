@@ -12,21 +12,20 @@ module ASassIn
     end
 
     def scan
-      @file_list = Dir.glob(@dir + '/**/*.s{a,c}ss*')
-      parse_file
+      @file_list = Dir.glob(@dir + '/**/*.s{a,c}ss')
+      parse_files
     end
 
 
     def detect_tab_type(string)
       if string.match(/^[\t]+/)
         @tab_type = { type: 'tab', number: 1 }
-      else 
-        @tab_type = { type: 'space', number: (string.match(/^[ ]+/).to_s.length) }
+      else
+        @tab_type = { type: 'space', number: string.match(/^[ ]+/).to_s.length }
       end
     end
 
-
-    def parse_file
+    def parse_files
 
       @file_list.each { |file|
 
@@ -69,7 +68,7 @@ module ASassIn
     end
 
     def get_nesting(string)
-      string.match(/^[ \t]+/)
+      string.encode('UTF-8', 'UTF-8', :invalid => :replace).match(/^[ \t]+/)
     end
 
 
@@ -85,7 +84,7 @@ module ASassIn
     end
 
     def infringes(tabs, threshold)
-      (tabs > threshold)
+      tabs > threshold
     end
 
   end

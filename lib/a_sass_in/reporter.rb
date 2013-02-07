@@ -8,7 +8,6 @@ module ASassIn
       @threshold = threshold
       @infringers = get_infringers
       @report_type = report_type
-      
       report
     end
 
@@ -28,12 +27,11 @@ module ASassIn
     <<-intro
 
       It's #{title}!
-      Through witchcraft, I scanned #{@report_data.length.to_s.black_on_white} sass files.
+      I scanned #{@report_data.length.to_s.black_on_white} sass files.
 
-      Here's the low-down:
+      Here's what I found:
 
     intro
-
 
     end
 
@@ -46,8 +44,6 @@ module ASassIn
         * Infringers: #{@infringers} (#{get_infringing_percentage})
 
       details
-
-
     end
 
 
@@ -76,7 +72,7 @@ module ASassIn
           (("%.2f" % percentage) + '%').red
         when percentage > 10
           (("%.2f" % percentage) + '%').yellow
-        else 
+        else
           (("%.2f" % percentage) + '%').green
         end
     end
@@ -92,7 +88,7 @@ module ASassIn
         report += <<-file_report
 
         --------------------------------------------------------------------------
-        
+
         File name: #{inf[:name]}
         Location: #{inf[:full_path]}
         Infringing lines: #{inf[:infringing_lines].length.to_s.red}

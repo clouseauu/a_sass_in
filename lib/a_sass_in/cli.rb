@@ -1,6 +1,7 @@
 require 'optparse'
 require 'colored'
 require 'pp'
+require 'ap'
 
 module ASassIn
 
@@ -21,12 +22,10 @@ module ASassIn
       end
     end
 
-
-
     def parse(args)
       opts = OptionParser.new do |opts|
 
-        opts.banner = "F*ck yeah A.Sass.In! Usage: a_sass_in [options]"
+        opts.banner = "A.Sass.In! Usage: a_sass_in [options]"
         opts.separator ""
         opts.separator "Specific options:"
 
@@ -56,13 +55,9 @@ module ASassIn
 
     end
 
-
     def options
       @options ||= {}
     end
-
-
-
 
   end
 
