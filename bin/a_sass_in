@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-  set :run, true
+require 'a_sass_in'
 
-  get '/' do
-    a_sass_in = ASassIn::hello
-    return a_sass_in.hello
-  end
+result = ASassIn::CLI.new(ARGV)
+
+exit(1) unless result

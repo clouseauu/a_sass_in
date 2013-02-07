@@ -13,5 +13,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "a_sass_in"
   gem.require_paths = ["lib"]
+  gem.add_dependency 'colored'
   gem.version       = ASassIn::VERSION
 end
