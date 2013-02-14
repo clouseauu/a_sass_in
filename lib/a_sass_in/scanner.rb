@@ -13,7 +13,7 @@ module ASassIn
 
     def scan
       @file_list = Dir.glob(@dir + '/**/*.s{a,c}ss')
-      parse_files
+      scan_all_files
     end
 
 
@@ -25,7 +25,7 @@ module ASassIn
       end
     end
 
-    def parse_files
+    def scan_all_files
 
       @file_list.each { |file|
 
