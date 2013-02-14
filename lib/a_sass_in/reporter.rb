@@ -14,38 +14,49 @@ module ASassIn
     def report
       puts intro
       puts details
-
       if @report_type > 0 then puts file_list end
-
     end
 
 
     def intro
-
-      title = 'A'.yellow + '.' + 'Sass'.green + '.' + 'in'.yellow
-
     <<-intro
 
-      It's #{title}!
+      It's #{'A'.yellow}.#{'Sass'.green}.#{'in'.yellow}!
       I scanned #{@report_data.length.to_s.black_on_white} sass files.
 
       Here's what I found:
 
     intro
-
     end
 
 
     def details
-      get_infringing_percentage
       <<-details
         * Total files: #{@report_data.length}
         * Tab Threshold: #{@threshold}
-        * Infringers: #{@infringers} (#{get_infringing_percentage})
-
+        * Infringers: #{@infringers} (#{colour_threshold( get_infringing_percentage.round(2), [25,10,0] )}%)
       details
     end
 
+
+    def file_list
+      report = ''
+      @infringing_files.each do |inf|
+        line_list = []
+        inf[:infringing_lines].each_slice(20) { |a| line_list.push a.join(',') }
+        report += "\t#{'-' * 80}\n"
+        report += <<-file_report
+        File name: #{inf[:name]}
+        Location: #{inf[:full_path]}
+        Infringing lines: #{colour_threshold( inf[:infringing_lines].length, [20,10,0] )}
+        Line list:
+        #{line_list.join("\n\t") }
+        file_report
+      end
+      report
+    end
+
+    private
 
     def get_infringers
       infringers = 0
@@ -60,49 +71,17 @@ module ASassIn
       infringers
     end
 
+
     def get_infringing_percentage
-      percentage = (100.0/@report_data.length) * @infringers
-
-      if percentage.nan?
-        percentage = 0
-      end
-
-      case
-        when percentage > 25
-          (("%.2f" % percentage) + '%').red
-        when percentage > 10
-          (("%.2f" % percentage) + '%').yellow
-        else
-          (("%.2f" % percentage) + '%').green
-        end
+      (100.0/@report_data.length) * @infringers || 0
     end
 
 
-    def file_list
-
-      report = ''
-
-      @infringing_files.each { |inf|
-
-        line_list = inf[:infringing_lines].join(',')
-        report += <<-file_report
-
-        --------------------------------------------------------------------------
-
-        File name: #{inf[:name]}
-        Location: #{inf[:full_path]}
-        Infringing lines: #{inf[:infringing_lines].length.to_s.red}
-        Line list: #{line_list}
-
-        file_report
-
-      }
-
-      report
-
+    def colour_threshold number, threshold = [25,10,0]
+      colours = [ 'red','yellow','green' ]
+      top = threshold.find_all { |val| number.to_i > val  }.max || 0
+      number.to_s.send( colours[  threshold.index top  ] )
     end
-
-
 
   end
 
